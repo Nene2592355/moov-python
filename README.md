@@ -7,6 +7,7 @@ The official SDK for interacting with the Moov API.
     <a href="https://opensource.org/licenses/Apache-2.0">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" />
     </a>
+    <a href="https://github.com/Nene2592355/moov-python/actions/workflows/sdk_generation.yaml"><img src="https://github.com/Nene2592355/moov-python/actions/workflows/sdk_generation.yaml/badge.svg" alt="SDK Generation" /></a>
 </div>
 
 <!-- Start Summary [summary] -->
