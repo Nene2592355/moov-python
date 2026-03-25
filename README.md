@@ -1863,6 +1863,49 @@ You can also enable a default debug logger by setting an environment variable `M
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 
+# Sandbox Account Check Workflow
+
+A lightweight GitHub Actions workflow is included in this repository to verify the onboarding status of a Moov Sandbox account without storing secrets in code.
+
+## What the workflow does
+
+1. Requests an OAuth2 access token via `POST /oauth2/token` using HTTP Basic auth (public/private key pair).
+2. Calls `GET /accounts/{accountID}` and prints a redacted summary.
+3. Calls `GET /accounts/{accountID}/capabilities` and prints all capability statuses.
+
+**The workflow does NOT:**
+- Log or echo any secrets or the access token.
+- Accept Terms of Service on your behalf.
+- Add or modify bank accounts or funding sources.
+- Make any write/mutation calls against the Moov API.
+
+## Required GitHub Secrets
+
+Add these in your repository under **Settings → Secrets and variables → Actions → New repository secret**:
+
+| Secret name       | Description                                      |
+|-------------------|--------------------------------------------------|
+| `MOOV_PUBLIC_KEY` | Your Moov API public key                         |
+| `MOOV_PRIVATE_KEY`| Your Moov API private key                        |
+| `MOOV_ACCOUNT_ID` | The Moov account UUID you want to inspect        |
+
+## Optional repository variables
+
+You can also set these under **Settings → Secrets and variables → Actions → Variables** (they are not sensitive):
+
+| Variable name   | Default                        | Description                            |
+|-----------------|--------------------------------|----------------------------------------|
+| `MOOV_BASE_URL` | `https://api.sandbox.moov.io`  | Moov API base URL                      |
+| `MOOV_VERSION`  | `v2026.01.00`                  | `x-moov-version` header value          |
+| `MOOV_SCOPES`   | `/accounts.read /capabilities.read` | OAuth2 scopes requested for the token |
+
+## How to run the workflow
+
+1. Ensure all required secrets are set (see above).
+2. Go to **Actions → Moov Sandbox Account Check → Run workflow**.
+3. Click **Run workflow** (no inputs required).
+4. Open the job logs — a redacted summary of your account and its capabilities will be printed.
+
 # Development
 
 ## Maturity
