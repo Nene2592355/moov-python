@@ -1,6 +1,6 @@
 # Moov Python
 
-The official SDK for interacting with the Moov API.
+The official SDK for interacting with the Moov API.nkYuLwr1reZGFKwa
 
 <div align="left">
     <a href="https://www.speakeasy.com/?utm_source=moovio-sdk&utm_campaign=python"><img src="https://custom-icon-badges.demolab.com/badge/-Built%20By%20Speakeasy-212015?style=for-the-badge&logoColor=FBE331&logo=speakeasy&labelColor=545454" /></a>
