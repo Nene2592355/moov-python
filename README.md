@@ -1863,6 +1863,76 @@ You can also enable a default debug logger by setting an environment variable `M
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 
+# Sandbox Account Check Workflow
+
+A lightweight GitHub Actions workflow is included in this repository to verify the onboarding status of a Moov Sandbox account without storing secrets in code.
+
+## What the workflow does
+
+1. Requests an OAuth2 access token via `POST /oauth2/token` using HTTP Basic auth (public/private key pair).
+2. Calls `GET /accounts/{accountID}` and prints a redacted summary.
+3. Calls `GET /accounts/{accountID}/capabilities` and prints all capability statuses.
+
+**The workflow does NOT:**
+- Log or echo any secrets or the access token.
+- Accept Terms of Service on your behalf.
+- Add or modify bank accounts or funding sources.
+- Make any write/mutation calls against the Moov API.
+
+## Required GitHub Secrets
+
+The workflow reads your Moov API credentials from **GitHub Secrets** — they are never stored in code or printed in logs.
+
+### How to add the secrets (step-by-step)
+
+1. Open your repository on GitHub:
+   ```
+   https://github.com/Nene2592355/moov-python
+   ```
+2. Click the **Settings** tab (top of the repo page, far right).
+3. In the left sidebar, click **Secrets and variables** → **Actions**.
+   > Direct link: `https://github.com/Nene2592355/moov-python/settings/secrets/actions`
+4. Click **New repository secret**.
+5. Add each of the following secrets one at a time:
+
+| Secret name        | Where to find the value                                     |
+|--------------------|-------------------------------------------------------------|
+| `MOOV_PUBLIC_KEY`  | Moov Dashboard → **API keys** → copy the **Public key**     |
+| `MOOV_PRIVATE_KEY` | Moov Dashboard → **API keys** → copy the **Private key**    |
+| `MOOV_ACCOUNT_ID`  | Set to your sandbox account UUID: `64ddb617-b36d-43a2-b665-a0804936202c` |
+
+For each secret: paste the name in the **Name** field, paste the value in the **Secret** field, then click **Add secret**.
+
+## Optional repository variables
+
+These are non-sensitive configuration values. Only add them if you want to override the defaults.
+
+### How to add variables
+
+1. Go to **Settings → Secrets and variables → Actions** (same page as above).
+   > Direct link: `https://github.com/Nene2592355/moov-python/settings/secrets/actions`
+2. Click the **Variables** tab (next to the "Secrets" tab on that page).
+3. Click **New repository variable** and add any of the following:
+
+| Variable name   | Default value                       | Description                            |
+|-----------------|-------------------------------------|----------------------------------------|
+| `MOOV_BASE_URL` | `https://api.sandbox.moov.io`       | Moov API base URL                      |
+| `MOOV_VERSION`  | `v2026.01.00`                       | `x-moov-version` header value          |
+| `MOOV_SCOPES`   | `/accounts.read /capabilities.read` | OAuth2 scopes requested for the token  |
+
+If you do not add these variables, the defaults listed above are used automatically.
+
+## How to run the workflow
+
+1. Add the three required secrets listed above (**required before the first run**).
+2. Go to the **Actions** tab of the repository:
+   ```
+   https://github.com/Nene2592355/moov-python/actions
+   ```
+3. In the left sidebar, click **Moov Sandbox Account Check**.
+4. Click the **Run workflow** button (top-right of the runs list), then click the green **Run workflow** confirmation.
+5. Wait for the run to finish, then click it to open the logs — a redacted summary of your account and its capabilities will be printed under the **Check Moov sandbox account** step.
+
 # Development
 
 ## Maturity

@@ -1,0 +1,29 @@
+name: Moov Sandbox Account Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-account:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check Moov sandbox account
+        env:
+          MOOV_PUBLIC_KEY: ${{ secrets.MOOV_PUBLIC_KEY }}
+          MOOV_PRIVATE_KEY: ${{ secrets.MOOV_PRIVATE_KEY }}
+          MOOV_ACCOUNT_ID: ${{ secrets.MOOV_ACCOUNT_ID }}
+          MOOV_BASE_URL: ${{ vars.MOOV_BASE_URL || 'https://api.sandbox.moov.io' }}
+          MOOV_VERSION: ${{ vars.MOOV_VERSION || 'v2026.01.00' }}
+          MOOV_SCOPES: ${{ vars.MOOV_SCOPES || '/accounts.read /capabilities.read' }}
+        run: python scripts/moov_check_account.py
